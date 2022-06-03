@@ -37,14 +37,13 @@ impl ESDump {
 
     pub async fn dump(&mut self) -> ESDumpResult<()> {
         let url_with_index = format!("{}/{}/_search?scroll=5m", self.es_url, self.index);
-        
+
         info!("signing the request");
         let signed_request = sign::get_signed_request(self, url_with_index)?;
         let scroll_api = api::api(signed_request).await?;
         info!("Response from ES \n {}", scroll_api);
         // get the scroll from response
         let scroll = from_str::<types::Scroll>(&scroll_api)?;
-
 
         if scroll.hits.hits.is_empty() {
             info!("There are no results for this query\n {}", self.query);
@@ -76,7 +75,7 @@ impl ESDump {
             // update url
             let scroll_url = format!("{}/_search/scroll", &self.es_url);
             self.query = to_string(&next_request)?;
-            
+
             info!("signing the request");
             let scrolled_signed_request = sign::get_signed_request(self, scroll_url)?;
             let scroll_response = api::api(scrolled_signed_request).await?;
@@ -89,8 +88,7 @@ impl ESDump {
 
             info!("writing the data to the file {}", self.file_name);
             for hit in &scroll.hits.hits {
-                file_ref
-                    .write_all(serde_json::to_string(hit)?.as_bytes())?;
+                file_ref.write_all(serde_json::to_string(hit)?.as_bytes())?;
                 file_ref.write_all("\n".as_bytes())?;
             }
         }

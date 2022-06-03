@@ -1,12 +1,9 @@
-use crate::errors::{ESDumpResult};
+use crate::errors::ESDumpResult;
+use crate::es_dump::ESDump;
 use aws_sigv4::http_request::{sign, SignableRequest, SigningParams, SigningSettings};
 use std::time::SystemTime;
-use crate::es_dump::ESDump;
 
-pub fn get_signed_request(
-    es_dump: &ESDump,
-    url: String
-) -> ESDumpResult<http::Request<String>> {
+pub fn get_signed_request(es_dump: &ESDump, url: String) -> ESDumpResult<http::Request<String>> {
     let mut request = http::Request::builder()
         .uri(url)
         .body(es_dump.query.clone())?;

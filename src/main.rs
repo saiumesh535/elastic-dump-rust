@@ -4,9 +4,9 @@ mod errors;
 mod es_dump;
 mod sign;
 mod types;
-use log::{info};
 use errors::ESDumpResult;
 use es_dump::ESDump;
+use log::info;
 
 #[tokio::main]
 async fn main() -> ESDumpResult<()> {
