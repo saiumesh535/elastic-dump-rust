@@ -48,3 +48,8 @@ elastic-dump-rust --es_url "<es_url>" \
 --key "<AWS_KEY_ID>" \
 --secret "<AWS_SECRET>"
 ```
+
+## Enable logs
+```cmd
+RUST_LOG=elastic_dump_rust <command....>
+```cmd

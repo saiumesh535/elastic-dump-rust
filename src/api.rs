@@ -13,8 +13,9 @@ pub async fn api(request: http::Request<String>) -> errors::ESDumpResult<String>
 
     let status = res.status();
     let response = res.text().await?;
-    info!("Request failed with code {}", status);
     if status != http::StatusCode::OK {
+        info!("Request failed with code {}", status);
+        info!("Response from ES \n {}", response);
         return Err(errors::ESDumpError::CustomError(response));
     }
     Ok(response)

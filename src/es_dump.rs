@@ -41,7 +41,6 @@ impl ESDump {
         info!("signing the request");
         let signed_request = sign::get_signed_request(self, url_with_index)?;
         let scroll_api = api::api(signed_request).await?;
-        info!("Response from ES \n {}", scroll_api);
         // get the scroll from response
         let scroll = from_str::<types::Scroll>(&scroll_api)?;
 
