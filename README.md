@@ -52,4 +52,4 @@ elastic-dump-rust --es_url "<es_url>" \
 ## Enable logs
 ```cmd
 RUST_LOG=elastic_dump_rust <command....>
-```cmd
+```
