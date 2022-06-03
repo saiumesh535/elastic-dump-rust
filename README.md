@@ -19,29 +19,32 @@ elastic-dump-rust --help
 ```
 
 ```cmd
-elastic-dump-rust 0.0.1
+elastic-dump-rust 0.0.3
 Sai Umesh <https://twitter.com/saiumesh>
 Elasticsearch dump cli
 
 USAGE:
-    elastic-dump-rust <es_url> <index> <query> <file_name> <key_id> <secret_key> [region]
-
-ARGS:
-    <es_url>        Elasticsearch URL
-    <index>         Name of the index
-    <query>         ES Query
-    <file_name>     Name of the file to be created
-    <key_id>        AWS Access Key Id
-    <secret_key>    AWS Secret Access Key
-    <region>        AWS region [default: us-east-1]
+    elastic-dump-rust [OPTIONS] --es_url <es_url> --index <index> --query <query> --file_name <file_name> --key <key_id> --secret <secret_key>
 
 OPTIONS:
-    -h, --help       Print help information
-    -V, --version    Print version information
+    -e, --es_url <es_url>          Elasticsearch URL
+    -f, --file_name <file_name>    Name of the file to be created
+    -h, --help                     Print help information
+    -i, --index <index>            Name of the index
+    -k, --key <key_id>             AWS Access Key Id
+    -q, --query <query>            ES Query
+    -r, --region <region>          AWS region [default: us-east-1]
+    -s, --secret <secret_key>      AWS Secret Access Key
+    -V, --version                  Print version information
 ```
 
 ## Example
 
 ```cmd
-elastic-dump-rust -- "<ES_URL>" "<Index_name>" "{\"size\":100,\"query\":{\"bool\":{\"filter\":{\"term\":{\"properties.appId\":928}}}}}" "<file_name>" "AWS_KEY_ID" "AWS_SECRET"
+elastic-dump-rust --es_url "<es_url>" \
+--index "index_name" \
+--query "<query>" \
+--file_name "<file_name>" \
+--key "<AWS_KEY_ID>" \
+--secret "<AWS_SECRET>"
 ```

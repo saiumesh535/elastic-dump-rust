@@ -3,7 +3,7 @@ use clap::{Arg, ArgMatches, Command};
 pub fn init_args() -> ArgMatches {
     let command = Command::new("elastic-dump-rust")
         .about("Elasticsearch dump cli")
-        .version("0.0.1")
+        .version("0.0.3")
         .subcommand_required(false)
         .arg_required_else_help(true)
         .author("Sai Umesh <https://twitter.com/saiumesh>")

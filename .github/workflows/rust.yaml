@@ -78,6 +78,6 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           name: "Added flags"
-          tag: "v0.0.2"
+          tag: "v0.0.3"
           artifacts: "elastic-dump-rust-linux, elastic-dump-rust-mac, elastic-dump-rust.exe"
           token: ${{ secrets.GITHUB_TOKEN }}
