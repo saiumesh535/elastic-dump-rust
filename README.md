@@ -15,7 +15,7 @@ Goto [release](https://github.com/saiumesh535/elastic-dump-rust/releases) and do
 ## Usage
 
 ```cmd
-elastic-dump-rust --help
+elastic_dump_rust --help
 ```
 
 ```cmd
@@ -24,7 +24,7 @@ Sai Umesh <https://twitter.com/saiumesh>
 Elasticsearch dump cli
 
 USAGE:
-    elastic-dump-rust [OPTIONS] --es_url <es_url> --index <index> --query <query> --file_name <file_name> --key <key_id> --secret <secret_key>
+    elastic_dump_rust [OPTIONS] --es_url <es_url> --index <index> --query <query> --file_name <file_name> --key <key_id> --secret <secret_key>
 
 OPTIONS:
     -e, --es_url <es_url>          Elasticsearch URL
@@ -41,7 +41,7 @@ OPTIONS:
 ## Example
 
 ```cmd
-elastic-dump-rust --es_url "<es_url>" \
+elastic_dump_rust --es_url "<es_url>" \
 --index "index_name" \
 --query "<query>" \
 --file_name "<file_name>" \

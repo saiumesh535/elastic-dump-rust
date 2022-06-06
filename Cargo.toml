@@ -19,3 +19,11 @@ tokio = { version = "1.18.2", features = ["macros", "rt-multi-thread"] }
 
 [profile.release]
 strip = true  # Automatically strip symbols from the binary.
+
+[[bin]]
+name = "elastic_dump_rust"
+path = "src/main.rs"
+
+[lib]
+name = "elastic_dump_rust"
+path = "src/lib.rs"

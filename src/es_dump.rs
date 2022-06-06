@@ -2,7 +2,6 @@ use std::fs::File;
 use std::io::Write;
 
 use crate::api;
-use crate::cli;
 use crate::errors::ESDumpError;
 use crate::errors::ESDumpResult;
 use crate::sign;
@@ -22,18 +21,8 @@ pub struct ESDump {
 }
 
 impl ESDump {
-    pub fn new() -> Self {
-        //unwrap is here fine since all the values are non-optional
-        let args = cli::init_args();
-        ESDump {
-            es_url: args.value_of("es_url").unwrap().to_string(),
-            index: args.value_of("index").unwrap().to_string(),
-            query: args.value_of("query").unwrap().to_string(),
-            file_name: args.value_of("file_name").unwrap().to_string(),
-            region: args.value_of("region").unwrap().to_string(),
-            key_id: args.value_of("key_id").unwrap().to_string(),
-            secret_key: args.value_of("secret_key").unwrap().to_string(),
-        }
+    pub fn new(es_dump: ESDump) -> Self {
+        es_dump
     }
 
     pub async fn dump(&mut self) -> ESDumpResult<()> {
