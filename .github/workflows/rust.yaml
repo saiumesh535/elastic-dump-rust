@@ -23,18 +23,18 @@ jobs:
       
       - name: rename file linux 
         if: matrix.os == 'ubuntu-20.04'
-        run: mv target/release/elastic-dump-rust ./elastic-dump-rust-linux
+        run: mv target/release/elastic_dump_rust ./elastic_dump_rust-linux
       
       - name: rename file mac
         if: matrix.os == 'macOS-latest'
-        run: mv target/release/elastic-dump-rust ./elastic-dump-rust-mac
+        run: mv target/release/elastic_dump_rust ./elastic_dump_rust-mac
 
       - name: "${{ matrix.os }}-artifact"
         if: matrix.os == 'windows-latest'
         uses: actions/upload-artifact@v2
         with:
           name: "${{ matrix.os }}-artifact"
-          path: target/release/elastic-dump-rust.exe
+          path: target/release/elastic_dump_rust.exe
           retention-days: 0
       
       - name: "Uploading exec for ${{matrix.os}}"
@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "${{ matrix.os }}-artifact"
-          path: ./elastic-dump-rust-linux
+          path: ./elastic_dump_rust-linux
           retention-days: 0
       
       - name: "Uploading exec for ${{matrix.os}}"
@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "${{ matrix.os }}-artifact"
-          path: ./elastic-dump-rust-mac
+          path: ./elastic_dump_rust-mac
           retention-days: 0
 
   release:
@@ -80,5 +80,5 @@ jobs:
           name: "Added flags"
           tag: "v0.0.3"
           allowUpdates: "true"
-          artifacts: "elastic-dump-rust-linux, elastic-dump-rust-mac, elastic-dump-rust.exe"
+          artifacts: "elastic_dump_rust-linux, elastic_dump_rust-mac, elastic_dump_rust.exe"
           token: ${{ secrets.GITHUB_TOKEN }}
