@@ -37,6 +37,7 @@ impl ESDump {
 
     pub async fn dump(&mut self) -> ESDumpResult<()> {
         let url_with_index = format!("{}/{}/_search?scroll=5m", self.es_url, self.index);
+        let mut scrolled_records = 0;
 
         info!("signing the request");
         let signed_request = sign::get_signed_request(self, url_with_index)?;
@@ -49,6 +50,8 @@ impl ESDump {
             return Ok(());
         }
 
+        info!("total number of records {}", scroll.hits.total);
+
         // create file
         info!("Creating a file with name {}", self.file_name);
         File::create(&self.file_name)?;
@@ -59,10 +62,15 @@ impl ESDump {
 
         // get the first set of value and insert into a file
         for hit in &scroll.hits.hits {
-            info!("writing the data to the file {}", self.file_name);
             file_ref.write_all(to_string(hit)?.as_bytes())?;
             file_ref.write_all("\n".as_bytes())?;
         }
+
+        scrolled_records += scroll.hits.hits.len();
+        info!(
+            "scrolled {}/{} number of records",
+            scrolled_records, scroll.hits.total
+        );
 
         // prepare next request
         let next_request = types::ScrollAPI {
@@ -75,21 +83,24 @@ impl ESDump {
             let scroll_url = format!("{}/_search/scroll", &self.es_url);
             self.query = to_string(&next_request)?;
 
-            info!("signing the request");
             let scrolled_signed_request = sign::get_signed_request(self, scroll_url)?;
             let scroll_response = api::api(scrolled_signed_request).await?;
             let scroll = from_str::<types::Scroll>(&scroll_response)?;
 
             if scroll.hits.hits.is_empty() {
-                info!("No more data to write");
                 break;
             }
 
-            info!("writing the data to the file {}", self.file_name);
             for hit in &scroll.hits.hits {
                 file_ref.write_all(serde_json::to_string(hit)?.as_bytes())?;
                 file_ref.write_all("\n".as_bytes())?;
             }
+
+            scrolled_records += scroll.hits.hits.len();
+            info!(
+                "scrolled {}/{} number of records",
+                scrolled_records, scroll.hits.total
+            );
         }
 
         info!("dump is done");

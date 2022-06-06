@@ -9,6 +9,7 @@ pub struct ScrollAPI {
 
 #[derive(Serialize, Deserialize)]
 pub struct Hits {
+    pub total: usize,
     pub hits: Vec<Value>,
 }
 
