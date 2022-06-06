@@ -3,6 +3,7 @@ use std::io::Write;
 
 use crate::api;
 use crate::cli;
+use crate::errors::ESDumpError;
 use crate::errors::ESDumpResult;
 use crate::sign;
 use crate::types;
@@ -36,6 +37,14 @@ impl ESDump {
     }
 
     pub async fn dump(&mut self) -> ESDumpResult<()> {
+
+        // check if the file already exists
+        if std::path::Path::new(&self.file_name).exists() {
+            return Err(ESDumpError::CustomError(
+                format!("File already exists with name {}", self.file_name))
+            );
+        }
+
         let url_with_index = format!("{}/{}/_search?scroll=5m", self.es_url, self.index);
         let mut scrolled_records = 0;
 
@@ -68,7 +77,7 @@ impl ESDump {
 
         scrolled_records += scroll.hits.hits.len();
         info!(
-            "scrolled {}/{} number of records",
+            "scrolled {}/{} records",
             scrolled_records, scroll.hits.total
         );
 
@@ -98,7 +107,7 @@ impl ESDump {
 
             scrolled_records += scroll.hits.hits.len();
             info!(
-                "scrolled {}/{} number of records",
+                "scrolled {}/{} records",
                 scrolled_records, scroll.hits.total
             );
         }
