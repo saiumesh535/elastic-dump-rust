@@ -17,7 +17,7 @@ jobs:
       - name: "Check for rustfmt"
         run: |
           # cargo fmt -- --check
-          echo ${{GITHUB_REF}}
+          echo ${{github.ref_name}}
 
   # build:
   #   ## run build only for branch main
