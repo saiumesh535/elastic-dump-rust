@@ -12,88 +12,89 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      # - name: "Check for cargo"
-      #   run: cargo check
+      
+      - name: "Check for cargo"
+        run: cargo check
+      
       - name: "Check for rustfmt"
         run: |
-          # cargo fmt -- --check
-          echo ${{github.ref}}
+          cargo fmt -- --check
 
-  # build:
-  #   ## run build only for branch main
-  #   if: ${{ github.ref_name }} == "master"
-  #   needs: [checks]
-  #   runs-on: ${{ matrix.os }}
-  #   strategy:
-  #     matrix:
-  #       os: [ubuntu-20.04, windows-latest, macOS-latest]
-  #       rust: [stable]
-  #   steps:
-  #     - uses: hecrj/setup-rust-action@v1
-  #       with:
-  #         rust-version: ${{ matrix.rust }}
-  #     - uses: actions/checkout@master
-  #     - name: Run build
-  #       run: cargo build --release
+  build:
+    ## run build only for branch main
+    if: ${{ github.ref == 'refs/heads/master' }}
+    needs: [checks]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, windows-latest, macOS-latest]
+        rust: [stable]
+    steps:
+      - uses: hecrj/setup-rust-action@v1
+        with:
+          rust-version: ${{ matrix.rust }}
+      - uses: actions/checkout@master
+      - name: Run build
+        run: cargo build --release
       
-  #     - name: rename file linux 
-  #       if: matrix.os == 'ubuntu-20.04'
-  #       run: mv target/release/elastic_dump_rust ./elastic_dump_rust-linux
+      - name: rename file linux 
+        if: matrix.os == 'ubuntu-20.04'
+        run: mv target/release/elastic_dump_rust ./elastic_dump_rust-linux
       
-  #     - name: rename file mac
-  #       if: matrix.os == 'macOS-latest'
-  #       run: mv target/release/elastic_dump_rust ./elastic_dump_rust-mac
+      - name: rename file mac
+        if: matrix.os == 'macOS-latest'
+        run: mv target/release/elastic_dump_rust ./elastic_dump_rust-mac
 
-  #     - name: "${{ matrix.os }}-artifact"
-  #       if: matrix.os == 'windows-latest'
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: "${{ matrix.os }}-artifact"
-  #         path: target/release/elastic_dump_rust.exe
-  #         retention-days: 0
+      - name: "${{ matrix.os }}-artifact"
+        if: matrix.os == 'windows-latest'
+        uses: actions/upload-artifact@v2
+        with:
+          name: "${{ matrix.os }}-artifact"
+          path: target/release/elastic_dump_rust.exe
+          retention-days: 0
       
-  #     - name: "Uploading exec for ${{matrix.os}}"
-  #       if: matrix.os == 'ubuntu-20.04'
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: "${{ matrix.os }}-artifact"
-  #         path: ./elastic_dump_rust-linux
-  #         retention-days: 0
+      - name: "Uploading exec for ${{matrix.os}}"
+        if: matrix.os == 'ubuntu-20.04'
+        uses: actions/upload-artifact@v2
+        with:
+          name: "${{ matrix.os }}-artifact"
+          path: ./elastic_dump_rust-linux
+          retention-days: 0
       
-  #     - name: "Uploading exec for ${{matrix.os}}"
-  #       if: matrix.os == 'macOS-latest'
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: "${{ matrix.os }}-artifact"
-  #         path: ./elastic_dump_rust-mac
-  #         retention-days: 0
+      - name: "Uploading exec for ${{matrix.os}}"
+        if: matrix.os == 'macOS-latest'
+        uses: actions/upload-artifact@v2
+        with:
+          name: "${{ matrix.os }}-artifact"
+          path: ./elastic_dump_rust-mac
+          retention-days: 0
 
-  # release:
-  #   needs: [build]
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - uses: actions/checkout@master
-  #     - name: Downloading windows exec
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: windows-latest-artifact
-  #         path: ./
-  #     - name: Downloading mac exec
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: macOS-latest-artifact
-  #         path: ./
-  #     - name: Downloading linux exec
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: ubuntu-20.04-artifact
-  #         path: ./
+  release:
+    needs: [build]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@master
+      - name: Downloading windows exec
+        uses: actions/download-artifact@v2
+        with:
+          name: windows-latest-artifact
+          path: ./
+      - name: Downloading mac exec
+        uses: actions/download-artifact@v2
+        with:
+          name: macOS-latest-artifact
+          path: ./
+      - name: Downloading linux exec
+        uses: actions/download-artifact@v2
+        with:
+          name: ubuntu-20.04-artifact
+          path: ./
 
-  #     - name: Releasing
-  #       uses: ncipollo/release-action@v1
-  #       with:
-  #         name: "Added flags"
-  #         tag: "v0.0.3"
-  #         allowUpdates: "true"
-  #         artifacts: "elastic_dump_rust-linux, elastic_dump_rust-mac, elastic_dump_rust.exe"
-  #         token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Releasing
+        uses: ncipollo/release-action@v1
+        with:
+          name: "Added flags"
+          tag: "v0.0.3"
+          allowUpdates: "true"
+          artifacts: "elastic_dump_rust-linux, elastic_dump_rust-mac, elastic_dump_rust.exe"
+          token: ${{ secrets.GITHUB_TOKEN }}
