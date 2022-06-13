@@ -3,7 +3,6 @@ use std::fmt::{self};
 use thiserror::Error;
 use url::ParseError;
 
-
 #[derive(Error)]
 pub enum ESDumpError {
     #[error("Error while signing")]
