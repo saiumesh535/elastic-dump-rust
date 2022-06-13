@@ -16,14 +16,6 @@ pub fn init_args() -> ArgMatches {
                 .help("Elasticsearch URL"),
         )
         .arg(
-            Arg::new("index")
-                .short('i')
-                .long("index")
-                .required(true)
-                .takes_value(true)
-                .help("Name of the index"),
-        )
-        .arg(
             Arg::new("query")
                 .short('q')
                 .long("query")
