@@ -1,6 +1,8 @@
 use aws_sigv4::signing_params::BuildError;
 use std::fmt::{self};
 use thiserror::Error;
+use url::ParseError;
+
 
 #[derive(Error)]
 pub enum ESDumpError {
@@ -16,6 +18,8 @@ pub enum ESDumpError {
     ErrorSerde(#[from] serde_json::Error),
     #[error("Error while creating request")]
     ErrorIO(#[from] std::io::Error),
+    #[error("Url parsing Error")]
+    ParseError(#[from] ParseError),
     #[error("`{0}`")]
     CustomError(String),
 }
@@ -30,6 +34,7 @@ impl fmt::Debug for ESDumpError {
             ESDumpError::ErrorSerde(err) => write!(f, "{}", err),
             ESDumpError::ErrorIO(err) => write!(f, "{}", err),
             ESDumpError::CustomError(err) => write!(f, "{}", err),
+            ESDumpError::ParseError(err) => write!(f, "{}", err),
         }
     }
 }
