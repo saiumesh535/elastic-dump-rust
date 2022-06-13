@@ -12,12 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: "Check for cargo"
-        run: cargo check
+      # - name: "Check for cargo"
+      #   run: cargo check
       - name: "Check for rustfmt"
         run: |
-          cargo fmt -- --check
-          echo ${{github.ref_name}}
+          # cargo fmt -- --check
+          echo ${{github.ref}}
 
   # build:
   #   ## run build only for branch main
